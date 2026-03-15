@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Westfield Plaza — Mall Directory</title>
+<link rel="stylesheet" href="styles.css?v=q8r3p2">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="mall-logo">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <rect width="36" height="36" rx="8" fill="#00b7af"/>
+        <path d="M6 28V14l12-8 12 8v14H22v-8h-8v8H6z" fill="white"/>
+      </svg>
+      <div class="mall-name">
+        <span class="mall-title">WESTFIELD PLAZA</span>
+        <span class="mall-subtitle">Shopping & Entertainment</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="search-wrapper">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="8.5" cy="8.5" r="5.5" stroke="#6a7071" stroke-width="2"/>
+        <path d="M13 13l4 4" stroke="#6a7071" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search stores, restaurants, services...">
+      <button class="search-clear" id="searchClear" style="display:none;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 4l8 8M12 4l-8 8" stroke="#6a7071" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="clock-widget" id="clockWidget">
+      <span id="clockTime">12:00</span>
+      <span id="clockDate">Loading...</span>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN LAYOUT -->
+<div class="app-layout">
+
+  <!-- LEFT SIDEBAR: Directory Panel -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Category Tabs -->
+    <div class="category-tabs" id="categoryTabs">
+      <button class="cat-btn active" data-cat="all">
+        <span class="cat-icon">🏬</span>
+        <span>All</span>
+      </button>
+      <button class="cat-btn" data-cat="fashion">
+        <span class="cat-icon">👗</span>
+        <span>Fashion</span>
+      </button>
+      <button class="cat-btn" data-cat="food">
+        <span class="cat-icon">🍽️</span>
+        <span>Dining</span>
+      </button>
+      <button class="cat-btn" data-cat="tech">
+        <span class="cat-icon">📱</span>
+        <span>Tech</span>
+      </button>
+      <button class="cat-btn" data-cat="entertainment">
+        <span class="cat-icon">🎬</span>
+        <span>Fun</span>
+      </button>
+      <button class="cat-btn" data-cat="beauty">
+        <span class="cat-icon">💅</span>
+        <span>Beauty</span>
+      </button>
+      <button class="cat-btn" data-cat="services">
+        <span class="cat-icon">🛎️</span>
+        <span>Services</span>
+      </button>
+    </div>
+
+    <!-- Floor Filter -->
+    <div class="floor-filter">
+      <span class="filter-label">Floor:</span>
+      <button class="floor-btn active" data-floor="all">All</button>
+      <button class="floor-btn" data-floor="1">Level 1</button>
+      <button class="floor-btn" data-floor="2">Level 2</button>
+      <button class="floor-btn" data-floor="3">Level 3</button>
+    </div>
+
+    <!-- Store List -->
+    <div class="store-list-wrapper">
+      <div class="store-list-header">
+        <span id="storeCount">42 Stores</span>
+        <button class="sort-btn" id="sortBtn">A–Z ▾</button>
+      </div>
+      <div class="store-list" id="storeList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CENTER: Map Area -->
+  <main class="map-area">
+
+    <!-- Map Controls -->
+    <div class="map-controls">
+      <div class="floor-selector">
+        <button class="floor-tab active" data-mapfloor="1">Level 1</button>
+        <button class="floor-tab" data-mapfloor="2">Level 2</button>
+        <button class="floor-tab" data-mapfloor="3">Level 3</button>
+      </div>
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomIn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 4v10M4 9h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="zoom-btn" id="zoomOut">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M4 9h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="zoom-btn" id="zoomReset" title="Reset View">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 3v3l3-3-3-3v3a6 6 0 100 12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="map-container" id="mapContainer">
+      <div class="map-viewport" id="mapViewport">
+        <!-- SVG maps injected here by JS -->
+      </div>
+    </div>
+
+    <!-- Map Legend -->
+    <div class="map-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#00b7af"></span>You Are Here</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#ff6b35"></span>Selected Store</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#ffd23f"></span>Route</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#a78bfa"></span>Restrooms</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#6a7071"></span>Elevator/Stairs</div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT PANEL: Info Panel -->
+  <aside class="info-panel" id="infoPanel">
+
+    <!-- Default: You Are Here -->
+    <div class="info-default" id="infoDefault">
+      <div class="you-are-here-badge">
+        <div class="yah-pulse"></div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="10" r="4" fill="#00b7af"/>
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#00b7af" opacity="0.3"/>
+        </svg>
+        <span>YOU ARE HERE</span>
+      </div>
+      <div class="kiosk-location">
+        <strong>Main Entrance</strong>
+        <span>Level 1, Center Court</span>
+      </div>
+      <div class="quick-links">
+        <p class="ql-title">Quick Find</p>
+        <div class="ql-grid">
+          <button class="ql-btn" data-store="restroom">
+            <span>🚻</span><span>Restrooms</span>
+          </button>
+          <button class="ql-btn" data-store="elevator">
+            <span>🛗</span><span>Elevators</span>
+          </button>
+          <button class="ql-btn" data-store="atm">
+            <span>🏧</span><span>ATM</span>
+          </button>
+          <button class="ql-btn" data-store="food-court">
+            <span>🍕</span><span>Food Court</span>
+          </button>
+          <button class="ql-btn" data-store="parking">
+            <span>🅿️</span><span>Parking</span>
+          </button>
+          <button class="ql-btn" data-store="info-desk">
+            <span>ℹ️</span><span>Info Desk</span>
+          </button>
+        </div>
+      </div>
+      <div class="mall-hours">
+        <p class="hours-title">Mall Hours</p>
+        <div class="hours-grid">
+          <span>Mon–Thu</span><span>10:00 AM – 9:00 PM</span>
+          <span>Fri–Sat</span><span>10:00 AM – 10:00 PM</span>
+          <span>Sunday</span><span>11:00 AM – 8:00 PM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Store Detail Panel -->
+    <div class="info-store" id="infoStore" style="display:none;">
+      <button class="back-btn" id="backBtn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Back to Directory
+      </button>
+
+      <div class="store-detail-header">
+        <div class="store-detail-icon" id="storeDetailIcon">🏬</div>
+        <div class="store-detail-info">
+          <h2 id="storeDetailName">Store Name</h2>
+          <div class="store-detail-meta">
+            <span class="store-detail-floor" id="storeDetailFloor">Level 1</span>
+            <span class="store-detail-unit" id="storeDetailUnit">Unit A1</span>
+          </div>
+          <span class="store-detail-cat" id="storeDetailCat">Category</span>
+        </div>
+      </div>
+
+      <div class="store-detail-desc" id="storeDetailDesc">
+        Store description goes here.
+      </div>
+
+      <div class="store-detail-hours">
+        <p class="detail-section-title">Store Hours</p>
+        <div id="storeDetailHours" class="store-hours-list"></div>
+      </div>
+
+      <div class="store-contact" id="storeContact">
+        <p class="detail-section-title">Contact</p>
+        <div id="storeContactInfo"></div>
+      </div>
+
+      <div class="route-section">
+        <p class="detail-section-title">Directions from Main Entrance</p>
+        <div class="route-steps" id="routeSteps"></div>
+        <button class="get-directions-btn" id="getDirectionsBtn">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 2L16 9l-7 7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M2 9h14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Show Route on Map
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- Search Results Overlay -->
+<div class="search-overlay" id="searchOverlay" style="display:none;">
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js?v=q8r3p2"></script>
+</body>
+</html>
